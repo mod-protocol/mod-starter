@@ -9,9 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mod-protocol/core": "/Users/stephan/environments/mod/mod-protocol/packages/core/mod-protocol-core-v0.0.1.tgz",
+    "@mod-protocol/farcaster": "/Users/stephan/environments/mod/mod-protocol/packages/farcaster/mod-protocol-farcaster-v0.0.1.tgz",
+    "@mod-protocol/miniapp-registry": "/Users/stephan/environments/mod/mod-protocol/packages/miniapp-registry/mod-protocol-miniapp-registry-v0.0.1.tgz",
+    "@mod-protocol/react": "/Users/stephan/environments/mod/mod-protocol/packages/react/mod-protocol-react-v0.0.1.tgz",
+    "@mod-protocol/react-editor": "/Users/stephan/environments/mod/mod-protocol/packages/react-editor/mod-protocol-react-editor-v0.0.1.tgz",
+    "@mod-protocol/react-ui-shadcn": "/Users/stephan/environments/mod/mod-protocol/packages/react-ui-shadcn/mod-protocol-react-ui-shadcn-v0.0.1.tgz",
+    "@mod-protocol/tiptap-extension-link": "/Users/stephan/environments/mod/mod-protocol/packages/tiptap-extension-link/mod-protocol-tiptap-extension-link-v0.0.0.tgz",
     "react": "^18",
     "react-dom": "^18",
-    "next": "13.5.6"
+    "next": "13.5.6",
+    "tailwindcss-animate": "^1.0.6"
   },
   "devDependencies": {
     "typescript": "^5",
