@@ -16,20 +16,21 @@
     "@mod-protocol/react-editor": "/Users/stephan/environments/mod/mod-protocol/packages/react-editor/mod-protocol-react-editor-v0.0.1.tgz",
     "@mod-protocol/react-ui-shadcn": "/Users/stephan/environments/mod/mod-protocol/packages/react-ui-shadcn/mod-protocol-react-ui-shadcn-v0.0.1.tgz",
     "@mod-protocol/tiptap-extension-link": "/Users/stephan/environments/mod/mod-protocol/packages/tiptap-extension-link/mod-protocol-tiptap-extension-link-v0.0.0.tgz",
+    "next": "13.5.6",
     "react": "^18",
     "react-dom": "^18",
-    "next": "13.5.6",
+    "swr": "^2.2.4",
     "tailwindcss-animate": "^1.0.6"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
+    "eslint": "^8",
+    "eslint-config-next": "13.5.6",
     "postcss": "^8",
     "tailwindcss": "^3",
-    "eslint": "^8",
-    "eslint-config-next": "13.5.6"
+    "typescript": "^5"
   }
 }
