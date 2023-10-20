@@ -31,6 +31,10 @@ export function CastFeed({ url }: { url: string }) {
               (embed: { url: string; metadata: UrlMetadata }, i) => (
                 <div key={i}>
                   <RenderEmbed
+                    api={
+                      process.env.NEXT_PUBLIC_API_URL ??
+                      "https://api.modprotocol.org"
+                    }
                     embed={{
                       cast_id: cast.hash,
                       status: "loaded",
