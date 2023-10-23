@@ -1,12 +1,3 @@
-import { useRelativeDate } from "../lib/relative-date";
-import React, { useMemo } from "react";
-import {
-  CommentIcon,
-  HeartIcon,
-  ShareIcon,
-  SyncIcon,
-  BookmarkIcon,
-} from "@primer/octicons-react";
 import {
   StructuredCastImageUrl,
   StructuredCastMention,
@@ -18,15 +9,23 @@ import {
   StructuredCastVideo,
   convertCastPlainTextToStructured,
 } from "@mod-protocol/farcaster";
-import { Embed } from "@mod-protocol/core";
-import { renderers } from "@mod-protocol/react-ui-shadcn/dist/renderers";
 import {
   contentMiniApps,
   defaultContentMiniApp,
 } from "@mod-protocol/miniapp-registry";
 import { RenderEmbed } from "@mod-protocol/react";
-import { CastWithMetadata } from "../types/cast";
+import { renderers } from "@mod-protocol/react-ui-shadcn/dist/renderers";
+import {
+  BookmarkIcon,
+  CommentIcon,
+  HeartIcon,
+  ShareIcon,
+  SyncIcon,
+} from "@primer/octicons-react";
 import Image from "next/image";
+import React, { useMemo } from "react";
+import { useRelativeDate } from "../lib/relative-date";
+import { CastWithMetadata } from "../types/cast";
 
 export const structuredCastToReactDOMComponentsConfig: Record<
   StructuredCastUnit["type"],

@@ -4,14 +4,6 @@ import * as React from "react";
 
 // Core
 import {
-  Channel,
-  getFarcasterChannels,
-  getFarcasterMentions,
-} from "@mod-protocol/farcaster";
-import { CreationMiniApp } from "@mod-protocol/react";
-import { useEditor, EditorContent } from "@mod-protocol/react-editor";
-import { creationMiniApps } from "@mod-protocol/miniapp-registry";
-import {
   Embed,
   ModManifest,
   fetchUrlMetadata,
@@ -19,19 +11,27 @@ import {
   handleOpenFile,
   handleSetInput,
 } from "@mod-protocol/core";
+import {
+  Channel,
+  getFarcasterChannels,
+  getFarcasterMentions,
+} from "@mod-protocol/farcaster";
+import { creationMiniApps } from "@mod-protocol/miniapp-registry";
+import { CreationMiniApp } from "@mod-protocol/react";
+import { EditorContent, useEditor } from "@mod-protocol/react-editor";
 
 // UI implementation
-import { createRenderMentionsSuggestionConfig } from "@mod-protocol/react-ui-shadcn/dist/lib/mentions";
-import { CreationMiniAppsSearch } from "@mod-protocol/react-ui-shadcn/dist/components/creation-miniapps-search";
 import { CastLengthUIIndicator } from "@mod-protocol/react-ui-shadcn/dist/components/cast-length-ui-indicator";
 import { ChannelPicker } from "@mod-protocol/react-ui-shadcn/dist/components/channel-picker";
-import { EmbedsEditor } from "@mod-protocol/react-ui-shadcn/dist/lib/embeds";
+import { CreationMiniAppsSearch } from "@mod-protocol/react-ui-shadcn/dist/components/creation-miniapps-search";
 import { Button } from "@mod-protocol/react-ui-shadcn/dist/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@mod-protocol/react-ui-shadcn/dist/components/ui/popover";
+import { EmbedsEditor } from "@mod-protocol/react-ui-shadcn/dist/lib/embeds";
+import { createRenderMentionsSuggestionConfig } from "@mod-protocol/react-ui-shadcn/dist/lib/mentions";
 import { renderers } from "@mod-protocol/react-ui-shadcn/dist/renderers";
 
 // Optionally replace with your API_URL here
