@@ -1,4 +1,4 @@
-import { Embed, UrlMetadata } from "@mod-protocol/core";
+import { UrlMetadata } from "@mod-protocol/core";
 
 export type Cast = {
   hash: string;
@@ -7,9 +7,14 @@ export type Cast = {
   username: string;
   timestamp: string;
   text: string;
+  reactions: {
+    likes: { fid: string }[];
+    recasts: { fid: string }[];
+  };
+  repliesCount: number;
   embeds: { url?: string; castId?: { hash: string; fid: number } }[];
 };
 
 export type CastWithMetadata = Cast & {
-  embeds: { url: string; metadata: UrlMetadata }[];
+  resolvedEmbeds: { url: string; metadata: UrlMetadata }[];
 };

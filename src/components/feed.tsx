@@ -1,57 +1,73 @@
 "use client";
 
-import { UrlMetadata } from "@mod-protocol/core";
-import {
-  contentMiniApps,
-  defaultContentMiniApp,
-} from "@mod-protocol/miniapp-registry";
-import { RenderEmbed } from "@mod-protocol/react";
-import { renderers } from "@mod-protocol/react-ui-shadcn/dist/renderers";
-import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 import { CastWithMetadata } from "../types/cast";
+import { Cast } from "./cast";
+import { LoadMoreSentinel } from "./load-more";
 
-export function CastFeed({ url }: { url: string }) {
-  const { data, isValidating } = useSWR<CastWithMetadata[]>(
-    url,
-    (url: string) => fetch(url).then(async (res) => (await res.json()).casts)
+type CastFeedParams =
+  | { fid: string; parentUrl?: string }
+  | { fid?: string; parentUrl: string };
+
+export function CastFeed({ fid, parentUrl }: CastFeedParams) {
+  const {
+    data: pages,
+    size,
+    setSize,
+    isValidating: loading,
+    error,
+  } = useSWRInfinite<{ casts: CastWithMetadata[]; cursor: string }>(
+    (pageIndex, prevPage) => {
+      let baseUrl = `/api/casts?fid=${fid}&parentUrl=${parentUrl}`;
+      console.log({ pageIndex, prevPage });
+      if (!prevPage) {
+        return baseUrl;
+      }
+
+      baseUrl = `${baseUrl}&cursor=${prevPage!.cursor}`;
+
+      if (prevPage.casts.length === 0) return null;
+
+      return baseUrl;
+    },
+    (url: string) =>
+      fetch(url).then(async (res) => {
+        const { casts, cursor } = await res.json();
+        return { casts, cursor };
+      }),
+    {
+      revalidateOnFocus: false,
+      revalidateFirstPage: false,
+    }
   );
+  const hasMore = !!pages?.[size - 1]?.casts.length;
 
-  if (!data) {
+  if (!pages) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
-      {data.map((cast) => (
-        <div key={cast.hash}>
-          <div>{cast.username}</div>
-          <div>{cast.text}</div>
-          <div>
-            {cast.embeds.map(
-              (embed: { url: string; metadata: UrlMetadata }, i) => (
-                <div key={i}>
-                  <RenderEmbed
-                    api={
-                      process.env.NEXT_PUBLIC_API_URL ??
-                      "https://api.modprotocol.org"
-                    }
-                    embed={{
-                      cast_id: cast.hash,
-                      status: "loaded",
-                      url: embed.url,
-                      metadata: embed.metadata,
-                    }}
-                    renderers={renderers}
-                    defaultContentMiniApp={defaultContentMiniApp}
-                    contentMiniApps={contentMiniApps}
-                  />
-                  {JSON.stringify(embed)}
-                </div>
-              )
-            )}
+    <div className="space-y-3">
+      {pages.map((page) =>
+        page.casts.map((cast) => (
+          <div key={cast.hash}>
+            <Cast cast={cast} />
           </div>
-        </div>
-      ))}
+        ))
+      )}
+      {hasMore && (
+        <LoadMoreSentinel
+          loadMore={() => {
+            setSize(size + 1);
+          }}
+          isLoading={loading}
+        ></LoadMoreSentinel>
+      )}
+      {loading ? (
+        <div className="w-full text-center">Loading...</div>
+      ) : (
+        !pages && <div>Something went wrong</div>
+      )}
     </div>
   );
 }

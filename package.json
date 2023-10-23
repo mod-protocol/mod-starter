@@ -15,7 +15,6 @@
     "@mod-protocol/react": "file:../../mod-protocol/packages/react/mod-protocol-react-v0.0.1.tgz",
     "@mod-protocol/react-editor": "file:../../mod-protocol/packages/react-editor/mod-protocol-react-editor-v0.0.1.tgz",
     "@mod-protocol/react-ui-shadcn": "file:../../mod-protocol/packages/react-ui-shadcn/mod-protocol-react-ui-shadcn-v0.0.1.tgz",
-    "@mod-protocol/tiptap-extension-link": "file:../../mod-protocol/packages/tiptap-extension-link/mod-protocol-tiptap-extension-link-v0.0.0.tgz",
     "next": "13.5.6",
     "react": "^18",
     "react-dom": "^18",
