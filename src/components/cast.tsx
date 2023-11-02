@@ -27,6 +27,10 @@ import React, { useMemo } from "react";
 import { useRelativeDate } from "../lib/relative-date";
 import { CastWithMetadata } from "../types/cast";
 
+function stringHashToUint(hash: string): Uint8Array {
+  return new Uint8Array(Buffer.from(hash.slice(2), "hex"));
+}
+
 export const structuredCastToReactDOMComponentsConfig: Record<
   StructuredCastUnit["type"],
   (structuredCast: any, i: number, options: {}) => React.ReactElement
@@ -136,12 +140,12 @@ export function Cast({ cast }: { cast: CastWithMetadata }) {
                 </div>
               </div>
             </div>
-            <div className="flex-grow">
+            <div className="flex-grow min-w-0">
               <span>
                 <b>{cast.display_name}</b>
               </span>{" "}
               <span>@{cast.username}</span> <span>· {publishedAt}</span>
-              <div className="cursor-pointer mt-1 max-w-[600px]">
+              <div className="cursor-pointer mt-1 max-w-[600px] break-words">
                 {convertStructuredCastToReactDOMComponents(structuredCast, {})}
                 <div>
                   {cast.resolvedEmbeds &&
@@ -152,7 +156,10 @@ export function Cast({ cast }: { cast: CastWithMetadata }) {
                           metadata: embed.metadata,
                           status: "loaded",
                           url: embed.url,
-                          cast_id: cast.hash,
+                          castId: {
+                            fid: cast.fid,
+                            hash: stringHashToUint(cast.hash),
+                          },
                         }}
                         key={i}
                         renderers={renderers}

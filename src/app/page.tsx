@@ -6,7 +6,7 @@ import EditorExample from "../components/editor-example";
 import { CastFeed } from "../components/feed";
 
 export default function Home() {
-  const [feedFid, setFeedFid] = useState<string | null>(null);
+  const [feedFid, setFeedFid] = useState<string | null>("3");
 
   const [feedInput, setFeedInput] = useState("");
 
@@ -21,7 +21,7 @@ export default function Home() {
             e.stopPropagation();
             setFeedFid(feedInput);
           }}
-          className="flex h-full w-full space-x-2 space-x-2 justify-start"
+          className="flex h-full w-full space-x-2 justify-start"
         >
           <input
             className="border rounded-sm pl-2"
@@ -30,7 +30,7 @@ export default function Home() {
             onChange={(e) => setFeedInput(e.target.value)}
           />
           <Button variant="outline" type="submit" className="h-full">
-            Set
+            Load feed
           </Button>
         </form>
         {feedFid && <CastFeed fid={feedFid} />}

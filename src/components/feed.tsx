@@ -19,7 +19,6 @@ export function CastFeed({ fid, parentUrl }: CastFeedParams) {
   } = useSWRInfinite<{ casts: CastWithMetadata[]; cursor: string }>(
     (pageIndex, prevPage) => {
       let baseUrl = `/api/casts?fid=${fid}&parentUrl=${parentUrl}`;
-      console.log({ pageIndex, prevPage });
       if (!prevPage) {
         return baseUrl;
       }
