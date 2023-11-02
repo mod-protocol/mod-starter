@@ -2,6 +2,7 @@ import { UrlMetadata } from "@mod-protocol/core";
 
 export type Cast = {
   hash: string;
+  fid: number;
   avatar_url: string;
   display_name: string;
   username: string;

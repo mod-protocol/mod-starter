@@ -37,6 +37,7 @@ export async function GET(
     const resJson = await res.json();
     const casts: Cast[] = resJson.casts.map((cast: any) => {
       return {
+        fid: cast.author.fid,
         avatar_url: cast.author.pfp_url,
         display_name: cast.author.display_name,
         username: cast.author.username,
@@ -58,7 +59,11 @@ export async function GET(
             cast.embeds.map(async (embed) => {
               if (!embed.url) return null;
               console.log("fetching metadata for", embed.url);
-              const metadata = await fetchUrlMetadata(embed.url);
+              const metadata = await fetchUrlMetadata(embed.url).catch(
+                (err) => {
+                  console.error(err);
+                }
+              );
               return { url: embed.url, metadata };
             })
           )
