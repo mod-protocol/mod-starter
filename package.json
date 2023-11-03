@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mod-protocol/core": "file:../mod/packages/core/mod-protocol-core-v0.0.1.tgz",
-    "@mod-protocol/farcaster": "file:../mod/packages/farcaster/mod-protocol-farcaster-v0.0.1.tgz",
-    "@mod-protocol/miniapp-registry": "file:../mod/packages/miniapp-registry/mod-protocol-miniapp-registry-v0.0.1.tgz",
-    "@mod-protocol/react": "file:../mod/packages/react/mod-protocol-react-v0.0.1.tgz",
-    "@mod-protocol/react-editor": "file:../mod/packages/react-editor/mod-protocol-react-editor-v0.0.1.tgz",
-    "@mod-protocol/react-ui-shadcn": "file:../mod/packages/react-ui-shadcn/mod-protocol-react-ui-shadcn-v0.0.1.tgz",
+    "@mod-protocol/core": "^0.0.2",
+    "@mod-protocol/farcaster": "^0.0.1",
+    "@mod-protocol/miniapp-registry": "^0.0.2",
+    "@mod-protocol/react": "^0.0.2",
+    "@mod-protocol/react-editor": "^0.0.2",
+    "@mod-protocol/react-ui-shadcn": "^0.0.2",
     "next": "13.5.6",
     "react": "^18",
     "react-dom": "^18",
