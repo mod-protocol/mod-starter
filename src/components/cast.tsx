@@ -150,22 +150,15 @@ export function Cast({ cast }: { cast: CastWithMetadata }) {
                 <div>
                   {cast.resolvedEmbeds &&
                     cast.resolvedEmbeds.map((embed, i) => (
-                      <RenderEmbed
-                        api={process.env.NEXT_PUBLIC_API_URL!}
-                        embed={{
-                          metadata: embed.metadata,
-                          status: "loaded",
-                          url: embed.url,
-                          castId: {
-                            fid: cast.fid,
-                            hash: stringHashToUint(cast.hash),
-                          },
-                        }}
-                        key={i}
-                        renderers={renderers}
-                        defaultContentMiniApp={defaultContentMiniApp}
-                        contentMiniApps={contentMiniApps}
-                      />
+                      <div key={i}>
+                        <RenderEmbed
+                          api={process.env.NEXT_PUBLIC_API_URL!}
+                          embed={embed}
+                          renderers={renderers}
+                          defaultContentMiniApp={defaultContentMiniApp}
+                          contentMiniApps={contentMiniApps}
+                        />
+                      </div>
                     ))}
                 </div>
               </div>

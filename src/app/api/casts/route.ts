@@ -1,11 +1,5 @@
-import {
-  UrlMetadata,
-  fetchUrlMetadata as fetchUrlMetadata_,
-} from "@mod-protocol/core";
 import { NextRequest, NextResponse } from "next/server";
 import { Cast, CastWithMetadata } from "../../../types/cast";
-
-const fetchUrlMetadata = fetchUrlMetadata_(process.env.NEXT_PUBLIC_API_URL!);
 
 export async function GET(
   request: NextRequest,
@@ -62,17 +56,15 @@ export async function GET(
     const castEmbedMetadata = await castEmbedMetadataRes.json();
 
     // Get metadata for each embed
-    const castsWithMetadata = await Promise.all(
-      casts.map(async (cast) => {
-        if (cast.embeds.length === 0) return cast;
-        const metadatas = castEmbedMetadata[cast.hash] || [];
-        const castWithMetadata: CastWithMetadata = {
-          ...cast,
-          resolvedEmbeds: metadatas,
-        };
-        return castWithMetadata;
-      })
-    );
+    const castsWithMetadata = casts.map((cast) => {
+      if (cast.embeds.length === 0) return cast;
+      const metadatas = castEmbedMetadata[cast.hash] || [];
+      const castWithMetadata: CastWithMetadata = {
+        ...cast,
+        resolvedEmbeds: metadatas,
+      };
+      return castWithMetadata;
+    });
 
     return NextResponse.json({
       casts: castsWithMetadata,
