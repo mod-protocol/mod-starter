@@ -31,8 +31,6 @@ export async function GET(
     });
     const url = `https://api.neynar.com/v2/farcaster/feed?${neynarSearchParams.toString()}`;
 
-    console.log(url);
-
     const res = await fetch(url);
     const resJson = await res.json();
     const casts: Cast[] = resJson.casts.map((cast: any) => {
@@ -50,27 +48,24 @@ export async function GET(
       } as Cast;
     });
 
+    const castEmbedMetadataRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/cast-embeds-metadata`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(casts.map((cast) => cast.hash)),
+      }
+    );
+
+    const castEmbedMetadata = await castEmbedMetadataRes.json();
+
     // Get metadata for each embed
     const castsWithMetadata = await Promise.all(
       casts.map(async (cast) => {
         if (cast.embeds.length === 0) return cast;
-        const metadatas = (
-          await Promise.all(
-            cast.embeds.map(async (embed) => {
-              if (!embed.url) return null;
-              console.log("fetching metadata for", embed.url);
-              const metadata = await fetchUrlMetadata(embed.url).catch(
-                (err) => {
-                  console.error(err);
-                }
-              );
-              return { url: embed.url, metadata };
-            })
-          )
-        ).filter((metadata) => metadata !== null) as {
-          url: string;
-          metadata: UrlMetadata;
-        }[];
+        const metadatas = castEmbedMetadata[cast.hash] || [];
         const castWithMetadata: CastWithMetadata = {
           ...cast,
           resolvedEmbeds: metadatas,
