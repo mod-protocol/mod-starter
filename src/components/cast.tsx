@@ -9,11 +9,8 @@ import {
   StructuredCastVideo,
   convertCastPlainTextToStructured,
 } from "@mod-protocol/farcaster";
-import {
-  contentMiniApps,
-  defaultContentMiniApp,
-} from "@mod-protocol/miniapp-registry";
-import { RenderEmbed } from "@mod-protocol/react";
+import { richEmbedMods, defaultRichEmbedMod } from "@mod-protocol/mod-registry";
+import { RichEmbed } from "@mod-protocol/react";
 import { renderers } from "@mod-protocol/react-ui-shadcn/dist/renderers";
 import {
   BookmarkIcon,
@@ -26,10 +23,6 @@ import Image from "next/image";
 import React, { useMemo } from "react";
 import { useRelativeDate } from "../lib/relative-date";
 import { CastWithMetadata } from "../types/cast";
-
-function stringHashToUint(hash: string): Uint8Array {
-  return new Uint8Array(Buffer.from(hash.slice(2), "hex"));
-}
 
 export const structuredCastToReactDOMComponentsConfig: Record<
   StructuredCastUnit["type"],
@@ -151,12 +144,12 @@ export function Cast({ cast }: { cast: CastWithMetadata }) {
                   {cast.resolvedEmbeds &&
                     cast.resolvedEmbeds.map((embed, i) => (
                       <div key={i}>
-                        <RenderEmbed
+                        <RichEmbed
                           api={process.env.NEXT_PUBLIC_API_URL!}
                           embed={embed}
                           renderers={renderers}
-                          defaultContentMiniApp={defaultContentMiniApp}
-                          contentMiniApps={contentMiniApps}
+                          defaultRichEmbedMod={defaultRichEmbedMod}
+                          mods={richEmbedMods}
                         />
                       </div>
                     ))}

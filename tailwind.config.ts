@@ -73,6 +73,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // make sure the open popover animations work
+    require("tailwindcss-animate"),
+  ],
 };
 export default config;
