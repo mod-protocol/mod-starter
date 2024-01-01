@@ -16,14 +16,14 @@ import {
   getFarcasterChannels,
   getFarcasterMentions,
 } from "@mod-protocol/farcaster";
-import { creationMiniApps } from "@mod-protocol/miniapp-registry";
-import { CreationMiniApp } from "@mod-protocol/react";
+import { creationMods, defaultRichEmbedMod } from "@mod-protocol/mod-registry";
+import { CreationMod, RichEmbed } from "@mod-protocol/react";
 import { EditorContent, useEditor } from "@mod-protocol/react-editor";
 
 // UI implementation
+import { ModsSearch } from "@mod-protocol/react-ui-shadcn/dist/components/creation-mods-search";
 import { CastLengthUIIndicator } from "@mod-protocol/react-ui-shadcn/dist/components/cast-length-ui-indicator";
 import { ChannelPicker } from "@mod-protocol/react-ui-shadcn/dist/components/channel-picker";
-import { CreationMiniAppsSearch } from "@mod-protocol/react-ui-shadcn/dist/components/creation-miniapps-search";
 import { Button } from "@mod-protocol/react-ui-shadcn/dist/components/ui/button";
 import {
   Popover,
@@ -81,10 +81,10 @@ export default function EditorExample() {
     }),
   });
 
-  const [currentMiniapp, setCurrentMiniapp] =
-    React.useState<ModManifest | null>(null);
+  const [currentMod, setCurrentMod] = React.useState<ModManifest | null>(null);
 
-  React.useEffect(() => {}, [currentMiniapp]);
+  // force re-render on CSR
+  React.useEffect(() => {}, [currentMod]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -94,7 +94,19 @@ export default function EditorExample() {
           autoFocus
           className="w-full h-full min-h-[200px]"
         />
-        <EmbedsEditor embeds={getEmbeds()} setEmbeds={setEmbeds} />
+        <EmbedsEditor
+          embeds={getEmbeds()}
+          setEmbeds={setEmbeds}
+          RichEmbed={({ embed }) => (
+            <RichEmbed
+              api={API_URL}
+              defaultRichEmbedMod={defaultRichEmbedMod}
+              mods={[defaultRichEmbedMod]}
+              embed={embed}
+              renderers={renderers}
+            />
+          )}
+        />
       </div>
       <div className="flex flex-row pt-2 gap-1">
         <ChannelPicker
@@ -103,38 +115,31 @@ export default function EditorExample() {
           value={getChannel()}
         />
         <Popover
-          open={!!currentMiniapp}
+          open={!!currentMod}
           onOpenChange={(op: boolean) => {
-            if (!op) setCurrentMiniapp(null);
+            if (!op) setCurrentMod(null);
           }}
         >
           <PopoverTrigger></PopoverTrigger>
-          <CreationMiniAppsSearch
-            miniapps={creationMiniApps}
-            onSelect={(miniapp) => {
-              setCurrentMiniapp(miniapp);
-            }}
-          />
+          <ModsSearch mods={creationMods} onSelect={setCurrentMod} />
           <PopoverContent className="w-[400px] ml-2" align="start">
             <div className="space-y-4">
-              <h4 className="font-medium leading-none">
-                {currentMiniapp?.name}
-              </h4>
+              <h4 className="font-medium leading-none">{currentMod?.name}</h4>
               <hr />
-              {currentMiniapp && (
-                <CreationMiniApp
+              {currentMod && (
+                <CreationMod
                   input={getText()}
                   embeds={getEmbeds()}
                   api={API_URL}
+                  user={{}}
                   variant="creation"
-                  manifest={currentMiniapp}
+                  manifest={currentMod}
                   renderers={renderers}
                   onOpenFileAction={handleOpenFile}
-                  onExitAction={() => {
-                    setCurrentMiniapp(null);
-                  }}
+                  onExitAction={() => setCurrentMod(null)}
                   onSetInputAction={handleSetInput(setText)}
                   onAddEmbedAction={handleAddEmbed(addEmbed)}
+                  onEthPersonalSignAction={() => {}}
                 />
               )}
             </div>

@@ -39,7 +39,7 @@ export function CastFeed({ fid, parentUrl }: CastFeedParams) {
       revalidateFirstPage: false,
     }
   );
-  const hasMore = !!pages?.[size - 1]?.casts.length;
+  const hasMore = !!pages?.[size - 1]?.casts?.length;
 
   if (!pages) {
     return <div>Loading...</div>;
@@ -48,7 +48,7 @@ export function CastFeed({ fid, parentUrl }: CastFeedParams) {
   return (
     <div className="space-y-3">
       {pages.map((page) =>
-        page.casts.map((cast) => (
+        page.casts?.map((cast) => (
           <div key={cast.hash}>
             <Cast cast={cast} />
           </div>

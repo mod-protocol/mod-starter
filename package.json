@@ -9,27 +9,27 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mod-protocol/core": "^0.0.2",
+    "@mod-protocol/core": "^0.1.0",
     "@mod-protocol/farcaster": "^0.0.1",
-    "@mod-protocol/miniapp-registry": "^0.0.2",
-    "@mod-protocol/react": "^0.0.2",
-    "@mod-protocol/react-editor": "^0.0.2",
-    "@mod-protocol/react-ui-shadcn": "^0.0.2",
+    "@mod-protocol/mod-registry": "^0.1.0",
+    "@mod-protocol/react": "^0.1.0",
+    "@mod-protocol/react-editor": "^0.0.3",
+    "@mod-protocol/react-ui-shadcn": "^0.2.0",
     "next": "13.5.6",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "swr": "^2.2.4",
     "tailwindcss-animate": "^1.0.6"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10",
-    "eslint": "^8",
+    "@types/node": "^20.10.5",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.56.0",
     "eslint-config-next": "13.5.6",
-    "postcss": "^8",
-    "tailwindcss": "^3",
-    "typescript": "^5"
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.3"
   }
 }
