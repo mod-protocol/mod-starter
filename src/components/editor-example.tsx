@@ -21,6 +21,8 @@ import { CreationMod, RichEmbed } from "@mod-protocol/react";
 import { EditorContent, useEditor } from "@mod-protocol/react-editor";
 
 // UI implementation
+import { MentionList } from "@mod-protocol/react-ui-shadcn/dist/components/mention-list";
+import { ChannelList } from "@mod-protocol/react-ui-shadcn/dist/components/channel-list";
 import { ModsSearch } from "@mod-protocol/react-ui-shadcn/dist/components/creation-mods-search";
 import { CastLengthUIIndicator } from "@mod-protocol/react-ui-shadcn/dist/components/cast-length-ui-indicator";
 import { ChannelPicker } from "@mod-protocol/react-ui-shadcn/dist/components/channel-picker";
@@ -76,8 +78,13 @@ export default function EditorExample() {
     onError,
     onSubmit,
     linkClassName: "text-blue-600",
+    renderChannelsSuggestionConfig: createRenderMentionsSuggestionConfig({
+      getResults: (query) => getChannels(query, true),
+      RenderList: ChannelList,
+    }),
     renderMentionsSuggestionConfig: createRenderMentionsSuggestionConfig({
       getResults: getResults,
+      RenderList: MentionList,
     }),
   });
 
