@@ -17,7 +17,7 @@ export async function GET(
 
     // https://api.neynar.com/v2/farcaster/feed/?api_key={api_key}&fid=194&cursor=2023-07-30T18:41:59.310Z&limit=10
     const neynarSearchParams = new URLSearchParams({
-      api_key: process.env.NEYNAR_API_SECRET!,
+      api_key: process.env.NEYNAR_API_KEY!,
       limit: "10",
       cursor: cursor || "",
       parent_url: parentUrl || "",
