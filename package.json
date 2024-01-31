@@ -9,17 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mod-protocol/core": "^0.1.1",
-    "@mod-protocol/farcaster": "^0.1.0",
-    "@mod-protocol/mod-registry": "^0.1.0",
-    "@mod-protocol/react": "^0.1.1",
+    "@farcaster/core": "^0.13.5",
+    "@farcaster/hub-web": "^0.7.3",
+    "@mod-protocol/core": "^0.2.0",
+    "@mod-protocol/farcaster": "^0.2.0",
+    "@mod-protocol/mod-registry": "^0.2.0",
+    "@mod-protocol/react": "^0.2.0",
     "@mod-protocol/react-editor": "^0.1.0",
-    "@mod-protocol/react-ui-shadcn": "^0.3.0",
+    "@mod-protocol/react-ui-shadcn": "^0.3.1",
+    "@rainbow-me/rainbowkit": "^1.2.0",
+    "axios": "^1.6.7",
+    "encoding": "^0.1.13",
     "next": "13.5.6",
+    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "swr": "^2.2.4",
-    "tailwindcss-animate": "^1.0.6"
+    "tailwindcss-animate": "^1.0.6",
+    "viem": "^1.19.0",
+    "wagmi": "^1.4.6"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",

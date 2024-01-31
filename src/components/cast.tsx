@@ -23,6 +23,21 @@ import Image from "next/image";
 import React, { useMemo } from "react";
 import { useRelativeDate } from "../lib/relative-date";
 import { CastWithMetadata } from "../types/cast";
+import {
+  ContextType,
+  SendEthTransactionActionResolverEvents,
+  SendEthTransactionActionResolverInit,
+  SendFcFrameActionResolverEvents,
+  SendFcFrameActionResolverInit,
+} from "@mod-protocol/core";
+import { useExperimentalMods } from "../hooks/use-experimental-mods";
+import { useFarcasterIdentity } from "../hooks/use-farcaster-connect";
+import { useAccount } from "wagmi";
+import {
+  sendTransaction,
+  switchNetwork,
+  waitForTransaction,
+} from "wagmi/actions";
 
 export const structuredCastToReactDOMComponentsConfig: Record<
   StructuredCastUnit["type"],
@@ -115,6 +130,94 @@ export function Cast({ cast }: { cast: CastWithMetadata }) {
     }, 0);
   }, [cast.reactions.recasts]);
 
+  const experimentalMods = useExperimentalMods();
+  const { farcasterUser } = useFarcasterIdentity();
+  const { address } = useAccount();
+  const fid = farcasterUser?.fid;
+
+  const context = useMemo<Omit<ContextType, "embed">>(() => {
+    return {
+      api: process.env.NEXT_PUBLIC_API_URL!,
+      user: {
+        id: fid,
+        wallet: {
+          address,
+        },
+      },
+    };
+  }, [address, fid]);
+
+  const onSendFcFrameAction = useMemo(() => {
+    async function onSendFcFrameActionRes(
+      { url, post_url, action }: SendFcFrameActionResolverInit,
+      { onError, onSuccess }: SendFcFrameActionResolverEvents
+    ) {
+      try {
+        if (!farcasterUser) {
+          onError({ message: "login please" });
+          return;
+        }
+        const options = {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            cast_hash: cast.hash,
+            signer_uuid: farcasterUser?.signer_uuid,
+            action: {
+              button: { title: "abc", index: Number(action) },
+              frames_url: url,
+              post_url: post_url,
+            },
+          }),
+        };
+
+        const res = await fetch("/post-message/frame-action", options);
+        const resJson = await res.json();
+
+        onSuccess(resJson);
+      } catch (err) {
+        onError(err as any);
+      }
+    }
+
+    return onSendFcFrameActionRes;
+  }, [fid, farcasterUser?.signer_uuid, cast.hash]);
+
+  const onSendEthTransactionAction = useMemo(
+    () =>
+      async (
+        { data, chainId }: SendEthTransactionActionResolverInit,
+        {
+          onConfirmed,
+          onError,
+          onSubmitted,
+        }: SendEthTransactionActionResolverEvents
+      ) => {
+        try {
+          const parsedChainId = parseInt(chainId);
+          // Switch chains if the user is not on the right one
+          await switchNetwork({ chainId: parsedChainId });
+          // Send the transaction
+          const { hash } = await sendTransaction({
+            ...data,
+            chainId: parsedChainId,
+          } as any);
+          onSubmitted(hash);
+          // Wait for the transaction to be confirmed
+          const { status } = await waitForTransaction({
+            hash,
+            chainId: parsedChainId,
+          });
+          onConfirmed(hash, status === "success");
+        } catch (e) {
+          onError(e as any);
+        }
+      },
+    []
+  );
+
   return (
     <div className="relative border rounded pb-2">
       <div>
@@ -145,11 +248,15 @@ export function Cast({ cast }: { cast: CastWithMetadata }) {
                     cast.resolvedEmbeds.map((embed, i) => (
                       <div key={i}>
                         <RichEmbed
-                          api={process.env.NEXT_PUBLIC_API_URL!}
                           embed={embed}
                           renderers={renderers}
+                          {...context}
                           defaultRichEmbedMod={defaultRichEmbedMod}
                           mods={richEmbedMods}
+                          resolvers={{
+                            onSendEthTransactionAction,
+                            onSendFcFrameAction,
+                          }}
                         />
                       </div>
                     ))}
